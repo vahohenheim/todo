@@ -16,7 +16,6 @@ import {
 	TableRow
 } from "@/components/ui/table";
 import { useState } from "react";
-import prisma from "@/db/db";
 
 interface TodoDatatableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
