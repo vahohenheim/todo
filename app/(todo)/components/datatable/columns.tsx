@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Todo } from "../../todo.model";
+import { Todo } from "@prisma/client";
 
 export const TodoDatatableColumns: ColumnDef<Todo>[] = [
 	{

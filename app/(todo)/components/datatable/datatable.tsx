@@ -22,7 +22,7 @@ interface TodoDatatableProps<TData, TValue> {
 	data: TData[];
 }
 
-const TodoDatatable = <TData, TValue>({
+const TodoDatatableComponent = <TData, TValue>({
 	columns,
 	data
 }: TodoDatatableProps<TData, TValue>) => {
@@ -103,4 +103,4 @@ const TodoDatatable = <TData, TValue>({
 	);
 };
 
-export default TodoDatatable;
+export default TodoDatatableComponent;

@@ -1,5 +1,3 @@
-"use client";
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,33 +12,27 @@ import {
 	FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { TodoFormComponentProps } from "./form.model";
+import { todoFormSchema } from "../../schemas/todo-form";
+import { TODO_FORM_DEFAULT_VALUES } from "./form.constants";
 import { useToast } from "@/components/ui/use-toast";
-import { createTodo } from "../../actions/create-todo";
-import { Todo } from "../../todo.model";
+import { useFormStatus } from "react-dom";
 
-const todoFormSchema = z.object({
-	label: z.string().min(2).max(50)
-});
-
-const TodoForm = () => {
+const TodoFormComponent = ({ onAdd }: TodoFormComponentProps) => {
+	const { pending } = useFormStatus();
 	const { toast } = useToast();
 
 	const form = useForm<z.infer<typeof todoFormSchema>>({
 		resolver: zodResolver(todoFormSchema),
-		defaultValues: {
-			label: ""
-		}
+		defaultValues: TODO_FORM_DEFAULT_VALUES,
+		mode: "onBlur"
 	});
 
-	const handleAction = (formData: FormData) => {
-        const todo: Todo = {
-            label: formData.get('label') as string
-        };
-		createTodo(todo);
-		form.reset();
+	const handleAction = async (formData: FormData) => {
+		await onAdd(formData, form);
 		toast({
 			title: "Todo added:",
-			description: todo.label,
+			description: formData.get("label") as string,
 			duration: 1000
 		});
 	};
@@ -64,10 +56,19 @@ const TodoForm = () => {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit">Submit</Button>
+				<Button
+					disabled={
+						pending ||
+						!form.control.getFieldState("label").isDirty ||
+						form.control.getFieldState("label").invalid
+					}
+					type="submit"
+				>
+					Submit
+				</Button>
 			</form>
 		</Form>
 	);
 };
 
-export default TodoForm;
+export default TodoFormComponent;

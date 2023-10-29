@@ -1,7 +1,5 @@
-import TodoDatatable from "./components/datatable/datatable";
-import TodoForm from "./components/form/form";
-import { TodoDatatableColumns } from "./components/datatable/columns";
 import prisma from "@/db/db";
+import { TodoComponent } from "./components/todo/todo";
 import { Suspense } from "react";
 
 export default async function Home() {
@@ -12,16 +10,9 @@ export default async function Home() {
 			<h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
 				Todo app
 			</h1>
-			<div className="py-4">
-				<Suspense>
-					<TodoForm />
-				</Suspense>
-			</div>
-			<div className="py-4">
-				<Suspense>
-					<TodoDatatable columns={TodoDatatableColumns} data={data} />
-				</Suspense>
-			</div>
+			<Suspense>
+				<TodoComponent data={data} />
+			</Suspense>
 		</div>
 	);
 }
